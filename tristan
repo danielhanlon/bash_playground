@@ -11,6 +11,6 @@ done
 echo "---------------------------"
 
 IFS=':' read -r ARRAY << $PASSWD
-for i in "${ADDR[@]}"; do
+for i in "${ARRAY[@]}"; do
   echo $i
 done

@@ -3,7 +3,7 @@ set -f # just to turn off shell expansion of the * in the passwd file
 #PASSWD=`cat /etc/passwd | tail -3`
 PASSWD="The quick brown:fox jumps\nover:the lazy dog"
 #echo $PASSWD
-ARR=(${PASSWD//:/ })
+ARR=(${PASSWD//:})
 for i in "${ARR[@]}"; do
   echo "$i"; 
 done

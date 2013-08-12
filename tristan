@@ -9,6 +9,9 @@ PASSWD="The quick brown:fox jumps\nover:the lazy dog"
 #done
 
 echo "---------------------------"
+echo "$PASSWD"
+echo "---------------------------"
+
 
 IFS=':' read -ra ARRAY << "$PASSWD"
 for i in "${ARRAY[@]}"; do

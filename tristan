@@ -12,5 +12,5 @@ echo "---------------------------"
 
 IFS=':' read -ra ARRAY << "$PASSWD"
 for i in "${ARRAY[@]}"; do
-  echo $i
+  echo $i ;
 done

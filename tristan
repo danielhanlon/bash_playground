@@ -5,6 +5,7 @@ echo "---------------------------"
 echo "$INPUT"
 echo "---------------------------"
 
+echo "Array split as...:"
 IFS=':' read -ra ARRAY <<< "$INPUT"
 for i in "${ARRAY[@]}"; do
   echo $i ;

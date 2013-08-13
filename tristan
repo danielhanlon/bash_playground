@@ -11,7 +11,7 @@ echo "---------------------------"
 IFS='\n' read -ra ARRAY_OF_LINES <<< "$INPUT"
 for i in "${ARRAY_OF_LINES[@]}"; do
   echo "New line......................."
-  IFS=':' read -ra ARRAY <<< "$ARRAY_OF_LINES"
+  IFS=':' read -ra ARRAY <<< "$i"
   for j in "${ARRAY[@]}"; do
     echo $i ;
   done

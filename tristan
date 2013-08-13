@@ -8,7 +8,11 @@ echo "---------------------------"
 echo "---------------------------"
 echo "Array split as...:"
 echo "---------------------------"
-IFS=':' read -ra ARRAY <<< "$INPUT"
-for i in "${ARRAY[@]}"; do
-  echo $i ;
+IFS='\n' read -ra ARRAY_OF_LINES <<< "$INPUT"
+for i in "${ARRAY_OF_LINES[@]}"; do
+  echo "New line......................."
+  IFS=':' read -ra ARRAY <<< "$ARRAY_OF_LINES"
+  for j in "${ARRAY[@]}"; do
+    echo $i ;
+  done
 done

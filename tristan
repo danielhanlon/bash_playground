@@ -13,6 +13,6 @@ for i in "${ARRAY_OF_LINES[@]}"; do
   echo "New line......................."
   IFS=':' read -ra ARRAY <<< "$i"
   for j in "${ARRAY[@]}"; do
-    echo $i ;
+    echo $j ;
   done
 done

@@ -1,0 +1,13 @@
+#/bin/bash
+# by Daniel Hanlon
+# Tool to mimick sudo behaviour in switching between irods accounts.
+
+# -h help
+# --add create configuration file
+# --import-exisiting -> rename .irodsEnv and .irodsA
+# ~/.irods/<user>@<host>.irodsEnv
+# ~/.irods/<user>@<host>.irodsA
+# isudo <user> -> checks for existance of <user>.irodsA, asks for password if not present and re-links etc.
+# isudo <tab> <tab> shows list of .irods/<users>.irodsEnv
+
+

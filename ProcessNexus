@@ -1,0 +1,92 @@
+#!/bin/bash
+# rough draft POC
+# by Daniel Hanlon d.hanlon@ucl.ac.uk daniel.hanlon@stfc.ac.uk
+
+#Original command line
+# for i in $(ls *.nxs) ; do echo $i `nxdir -o -p /raw_data_1/run_number $i`; done
+
+usage (){
+  echo "Tool to take a directory of Nexus files and Map-Reduce on a given variable"
+  echo "The output directory contains subdirectories with the name of the variable on"
+  echo "which the Reduce function is run, each containing symlinks back to the original file"
+  echo 
+  echo "Usage "$(basename $0)" -i <inputDirectory> -o <outputDirectory> -v <variable to group on> -f"
+  exit 0
+}
+
+#default source directory
+inputDir=$PWD
+
+#default destination directory
+outputDir=$PWD/output-`date +%s`
+
+#default reduce variable
+reduceVar="/raw_data_1/run_number"
+
+#default fido_location
+fido=`which fido.py`
+
+#if [ $# -lt 2 ] ; then
+#  echo "Error"
+#  exit 1
+#fi
+
+#Process the command line arguments -i -o -v
+while getopts i:o:v:fh opt
+do
+  case "$opt" in
+    i) inputDir=$OPTARG;;
+    o) outputDir=$OPTARG;;
+    v) reduceVar=$OPTARG;;
+    f) ls_cmd="$fido -q -useformats \"fmt/nexus\" -nomatchprintf \"\" -matchprintf \"%(info.filename)s \n\" $inputDir 2>&1";;
+    h) usage;;
+  esac
+done
+
+#default ls command if not using fido
+#ls_cmd=${ls_cmd-"ls $inputDir/*.nxs"}
+if [ -z "${ls_cmd}" ]; then 
+  ls_cmd="ls $inputDir/*.nxs"
+else
+  echo "Setting IFS to new line"
+  IFS=" 
+  "
+fi
+
+#Check that output directory exists
+if [ ! -d "$outputDir" ]; then
+  mkdir $outputDir
+fi
+
+#./fido/fido/fido.py -q -useformats "fmt/nexus" -nomatchprintf "" -matchprintf "%(info.filename)s\n" small_nexus_hdf5
+#for i in `ls $inputDir/*.nxs` ; do
+echo "ls_cmd=$ls_cmd"
+#exit 0
+for i in `$ls_cmd` ; do
+  echo "Input file=$i"
+
+done
+exit 0
+  # nxdir -o -p /raw_data_1/run_number
+  # nxdir -o -p $reduceVar $i
+  
+  #Find the value of the variable being searched for
+  value=`nxdir -o -p $reduceVar $i | awk -F= '{print $2}'`
+  echo "Reduce variable ($reduceVar)=$value"
+
+  #Check whether there is a subdirectory of the outputDir with this value
+  #and make one if not
+  if [ ! -d "$outputDir/$value" ]; then
+    echo "Output directory for value=$value does not exist"
+    echo "Creating $outputDir/$value"
+    mkdir $outputDir/$value
+  fi
+
+  #Populate the newly created output directory for this value with a symlink to the original
+  ln -s $i $outputDir/$value
+  echo "Symlink created from $i to $outputDir/$value"
+
+  echo "-------------------------------------------------------"
+  #and loop
+done
+
